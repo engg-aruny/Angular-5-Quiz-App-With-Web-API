@@ -8,43 +8,43 @@ using WebAPI.Models;
 
 namespace WebAPI.Controllers
 {
-    public class QuizController : ApiController
-    {
-        [HttpGet]
-        [Route("api/Questions")]
-        public HttpResponseMessage GetQuestions() {
-            using (DBModel db = new DBModel())
-            {
-                var Qns = db.Questions
-                    .Select(x => new { QnID = x.QnID, Qn = x.Qn, ImageName = x.ImageName, x.Option1, x.Option2, x.Option3, x.Option4 })
-                    .OrderBy(y => Guid.NewGuid())
-                    .Take(10)
-                    .ToArray();
-                var updated = Qns.AsEnumerable()
-                    .Select(x => new
-                    {
-                        QnID = x.QnID,
-                        Qn = x.Qn,
-                        ImageName = x.ImageName,
-                        Options = new string[] { x.Option1, x.Option2, x.Option3, x.Option4 }
-                    }).ToList();
-                return this.Request.CreateResponse(HttpStatusCode.OK, updated);
-            }
-        }
+	public class QuizController : ApiController
+	{
+		private readonly IRepository _repository;
 
-        [HttpPost]
-        [Route("api/Answers")]
-        public HttpResponseMessage GetAnswers(int[] qIDs) {
-            using (DBModel db = new DBModel())
-            {
-               var result = db.Questions
-                    .AsEnumerable()
-                    .Where(y => qIDs.Contains(y.QnID))
-                    .OrderBy(x => { return Array.IndexOf(qIDs, x.QnID); })
-                    .Select(z => z.Answer)
-                    .ToArray();
-                return this.Request.CreateResponse(HttpStatusCode.OK, result); 
-            }
-        }
-    }
+		public QuizController()
+		{
+			this._repository = new Repository(new DBModel());
+		}
+
+		public QuizController(IRepository repository)
+		{
+			this._repository = repository;
+		}
+
+
+
+		[HttpGet]
+		[Route("api/Questions")]
+		public HttpResponseMessage GetQuestions()
+		{
+			return this.Request.CreateResponse(HttpStatusCode.OK, _repository.GetQuestions());
+		}
+
+		[HttpPost]
+		[Route("api/Answers")]
+		public HttpResponseMessage GetAnswers(int[] qIDs)
+		{
+			using (DBModel db = new DBModel())
+			{
+				var result = db.Questions
+					 .AsEnumerable()
+					 .Where(y => qIDs.Contains(y.QnID))
+					 .OrderBy(x => { return Array.IndexOf(qIDs, x.QnID); })
+					 .Select(z => z.Answer)
+					 .ToArray();
+				return this.Request.CreateResponse(HttpStatusCode.OK, result);
+			}
+		}
+	}
 }

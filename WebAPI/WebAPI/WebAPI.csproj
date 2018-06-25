@@ -20,6 +20,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -170,12 +171,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DBModels.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\IRepository.cs" />
     <Compile Include="Models\Participant.cs">
       <DependentUpon>DBModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Question.cs">
       <DependentUpon>DBModels.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Repository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

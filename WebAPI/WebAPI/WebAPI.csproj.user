@@ -6,6 +6,7 @@
     <WebStackScaffolding_IsReferencingScriptLibrariesSelected>True</WebStackScaffolding_IsReferencingScriptLibrariesSelected>
     <WebStackScaffolding_LayoutPageFile />
     <ProjectView>ProjectFiles</ProjectView>
+    <UseIISExpress>true</UseIISExpress>
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
